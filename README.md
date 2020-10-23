@@ -6,4 +6,4 @@ Une regression lineaire est une methode mathematique qui permet de retrouver une
 
 Le projet est en deux partie:
   - linearRegression qui a pour but de calculer le resultat de la fonction f(x)
-  - gradientDescent qui realise l'algorothme du gradient, calculant les facteurs theta0 et theta1 necessaire au calcul de la fonction
+  - gradientDescent qui analyse les données du model et realise l'algorothme du gradient calculant les facteurs theta0 et theta1 necessaire au calcul de la fonction
