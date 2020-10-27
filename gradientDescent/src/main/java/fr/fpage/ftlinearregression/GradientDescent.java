@@ -5,23 +5,15 @@ import java.util.List;
 
 public class GradientDescent {
 
-    private List<Car> cars;
+    public static int ITERATION = 2000000;
+
+    private final List<Car> cars;
     private Float th0 = 0f, th1 = 0f;
-    public static int ITERATION = 1000000;
-    public List<GraphicPoint> variationPoints = new ArrayList<>();
-    private Float LEARNINGRATE = 0.0001f;
+    private final List<GraphicPoint> variationPoints = new ArrayList<>();
+    private final Float LEARNINGRATE = 0.0001f;
 
     public GradientDescent(List<Car> cars) {
         this.cars = cars;
-        float lastth0 = 0;
-        int i = 0;
-        while (i < ITERATION)
-        {
-            this.variationPoints.add(new GraphicPoint(i, this.th0-lastth0));
-            lastth0 = this.th0;
-            this.calcNewTheta();
-            i++;
-        }
     }
 
     private float[] cost()
@@ -52,5 +44,29 @@ public class GradientDescent {
 
     public Float getTh1() {
         return th1;
+    }
+
+    public List<GraphicPoint> getVariationPoints() {
+        return variationPoints;
+    }
+
+    public void start() throws InterruptedException {
+        float lastTh0 = 0;
+        int i = 0;
+        while (i < ITERATION)
+        {
+            if (i % (ITERATION/500) == 0) {
+                if (i < ITERATION / 2)
+                    Thread.sleep(100);
+                else
+                    Thread.sleep(30);
+                Main.repaintGraphic();
+            }
+            this.variationPoints.add(new GraphicPoint(i, this.th0-lastTh0));
+            lastTh0 = this.th0;
+            this.calcNewTheta();
+            i++;
+        }
+        Main.repaintGraphic();
     }
 }

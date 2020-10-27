@@ -12,6 +12,9 @@ import java.util.List;
 
 public class Main {
 
+    private static GradientDescent desc;
+    private static Graphics graphics;
+
     public static void main (String[] args) {
         List<Car> cars = new ArrayList<>();
         String legendeX = "", legendeY = "";
@@ -27,11 +30,16 @@ public class Main {
                 }
             }
         }
-        catch (IOException e) {}
-        GradientDescent desc = new GradientDescent(cars);
-    /*    for (Car car : cars) {
-            System.out.println(car);
-        }*/
+        catch (IOException e) {
+            System.out.println("Impossible de trouver le fichier data.csv");
+            return;
+        }
+        desc = new GradientDescent(cars);
+        graphics = new Graphics("Representation de la droite", legendeX, legendeY, cars, desc);
+        try {
+            desc.start();
+        } catch (InterruptedException e) {
+        }
         try {
             CSVWriter writer = new CSVWriter(new FileWriter("../result.csv"));
             List<String[]> result = new ArrayList<>();
@@ -42,12 +50,16 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Graphics("Iteration", "Variation", desc.variationPoints, null);
-        new Graphics(legendeX, legendeY, cars, desc);
+        new Graphics("Evolution des Theta", "Iteration", "Variation", desc.getVariationPoints(), null);
+      //  new Graphics("Representation de la droite", legendeX, legendeY, cars, desc);
     }
 
     public static int estimatePrice(int theta0, int theta1, int mileage)
     {
         return theta0 + (theta1 * mileage);
+    }
+
+    public static void repaintGraphic() {
+        graphics.repaint();
     }
 }

@@ -8,19 +8,20 @@ import java.util.List;
 public class Graphics extends JPanel {
 
     private JFrame jFrame;
-    private String legendX, legendY;
+    private final String legendX;
+    private final String legendY;
     private float maxX, maxY;
-    private List<? extends GraphicPoint> graphicPoints;
-    private GradientDescent desc = null;
+    private final List<? extends GraphicPoint> graphicPoints;
+    private final GradientDescent desc;
 
-    public Graphics(String legendX, String legendY, List<? extends GraphicPoint> graphicPoints, GradientDescent desc)
+    public Graphics(String name, String legendX, String legendY, List<? extends GraphicPoint> graphicPoints, GradientDescent desc)
     {
         this.legendX = legendX;
         this.legendY = legendY;
         this.graphicPoints = graphicPoints;
         this.desc = desc;
         this.maxValues();
-        this.prepareJFrame();
+        this.prepareJFrame(name);
         this.jFrame.getContentPane().add(this);
         this.jFrame.setVisible(true);
     }
@@ -52,6 +53,7 @@ public class Graphics extends JPanel {
 
     @Override
     public void paint(java.awt.Graphics g) {
+        super.paintComponent(g);
         g.drawLine(50, 30, 50, 830);
         g.drawLine(50, 830, 850, 830);
         g.drawLine(150, 825, 150, 835);
@@ -78,10 +80,6 @@ public class Graphics extends JPanel {
         for (int x = 1; x <= 10; x++)
             g.drawString("" + ((int) (this.maxY * 0.125 * x)), 10, 835 - (100*x));
         g.drawString("0", 40, 840);
-  /*      for (GraphicPoint point : this.graphicPoints) {
-            Car car = ((Car) point);
-            g.fillOval(this.getGraphXCoord(car.getNormalizeKm()), this.getGraphYCoord(car.getNormalizePrice()), 5, 5);
-        }*/
         for (GraphicPoint point : this.graphicPoints) {
             g.fillOval(this.getGraphXCoord(point.getValue1()), this.getGraphYCoord(point.getValue2()), 5, 5);
         }
@@ -120,10 +118,10 @@ public class Graphics extends JPanel {
             return ((int) (830 - (800 * y / this.maxY)));
     }
 
-    private void prepareJFrame()
+    private void prepareJFrame(String name)
     {
         this.jFrame = new JFrame();
-        this.jFrame.setTitle("Graphics");
+        this.jFrame.setTitle(name);
         this.jFrame.setSize(900, 900);
         this.jFrame.setLocationRelativeTo(null);
         this.jFrame.addWindowListener(new WindowListener() {
@@ -145,5 +143,7 @@ public class Graphics extends JPanel {
             public void windowDeactivated(WindowEvent e) {}
         });
     }
+
+
 
 }
